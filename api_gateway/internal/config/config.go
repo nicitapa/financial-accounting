@@ -5,16 +5,14 @@ import (
 )
 
 type Config struct {
-	Port                string
-	AuthServiceURL      string
-	EmployeesServiceURL string
+	Port                  string
+	TransactionServiceURL string
 }
 
 func Load() *Config {
 	return &Config{
-		Port:                getEnv("PORT", ":8283"),
-		AuthServiceURL:      getEnv("AUTH_SERVICE_URL", "http://localhost:8284"),
-		EmployeesServiceURL: getEnv("EMPLOYEES_SERVICE_URL", "http://localhost:7780"),
+		Port:                  getEnv("PORT", ":8283"),
+		TransactionServiceURL: getEnv("TRANSACTION_SERVICE_URL", "http://localhost:8080"),
 	}
 }
 
