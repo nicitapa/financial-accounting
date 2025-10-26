@@ -23,7 +23,7 @@ func Setup(cfg *config.Config) *chi.Mux {
 	})
 
 	mount(r, "/auth", cfg.AuthServiceURL)
-	mount(r, "/api/products", cfg.ProductServiceURL)
+	mount(r, "/api/employees", cfg.EmployeesServiceURL)
 
 	return r
 }
