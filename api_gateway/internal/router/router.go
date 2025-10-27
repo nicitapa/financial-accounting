@@ -22,8 +22,7 @@ func Setup(cfg *config.Config) *chi.Mux {
 		w.Write([]byte(`{"status":"ok"}`))
 	})
 
-	mount(r, "/auth", cfg.AuthServiceURL)
-	mount(r, "/api/employees", cfg.EmployeesServiceURL)
+	mount(r, "/", cfg.TransactionServiceURL)
 
 	return r
 }
