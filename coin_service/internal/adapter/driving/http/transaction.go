@@ -83,9 +83,8 @@ func (s *Server) GetTransactionByID(c *gin.Context) {
 func (s *Server) GetTotalBalance(c *gin.Context) {
 	total, err := s.uc.TotalBalance.GetTotalBalance(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, CommonError{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, total)
 		return
 	}
-
-	c.JSON(http.StatusOK, gin.H{"total_balance": total})
+	c.JSON(http.StatusOK, total)
 }

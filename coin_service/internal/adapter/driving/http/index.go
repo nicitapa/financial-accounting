@@ -31,7 +31,7 @@ func New(
 	srv.endpoints()
 
 	httpServer := &http.Server{
-		Addr:              cfg.HTTPPort,
+		Addr:              ":" + cfg.HTTPPort,
 		Handler:           srv,
 		ReadHeaderTimeout: httpServerReadHeaderTimeout,
 	}

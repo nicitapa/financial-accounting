@@ -49,11 +49,12 @@ func (t *TransactionStorage) CreateTransaction(ctx context.Context, transaction 
 	var dbTransaction Transaction
 	dbTransaction.FromDomain(transaction)
 	_, err = t.db.ExecContext(ctx,
-		`INSERT INTO transactions (category, amount, currency, description)
-	 VALUES ($1, $2, $3, $4);`,
+		`INSERT INTO transactions (category, amount, currency, timestamp, description)
+	 VALUES ($1, $2, $3, $4, $5);`,
 		dbTransaction.Category,
 		dbTransaction.Amount,
 		dbTransaction.Currency,
+		dbTransaction.Timestamp, // ← обязательно
 		dbTransaction.Description,
 	)
 	if err != nil {

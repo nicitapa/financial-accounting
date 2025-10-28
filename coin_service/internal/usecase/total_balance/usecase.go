@@ -4,13 +4,17 @@ import (
 	"coin_service/internal/config"
 	"coin_service/internal/port/driven"
 	"context"
-	"fmt"
 	"log"
 )
 
 type UseCase struct {
 	cfg                *config.Config
 	transactionStorage driven.TransactionStorage
+}
+type BalanceResponse struct {
+	Total   float64 `json:"total"`
+	Status  string  `json:"status"`
+	Message string  `json:"message,omitempty"`
 }
 
 func New(cfg *config.Config, transactionStorage driven.TransactionStorage) *UseCase {
@@ -20,17 +24,26 @@ func New(cfg *config.Config, transactionStorage driven.TransactionStorage) *UseC
 	}
 }
 
-func (u *UseCase) GetTotalBalance(ctx context.Context) (float64, error) {
+func (u *UseCase) GetTotalBalance(ctx context.Context) (*BalanceResponse, error) {
 	total, err := u.transactionStorage.GetTotalBalance(ctx)
 	if err != nil {
 		log.Println("failed to get balance:", err)
-		return 0, nil
+		return &BalanceResponse{
+			Total:   0,
+			Status:  "error",
+			Message: err.Error(),
+		}, err
 	}
 
-	if total >= 0 {
-		fmt.Printf("💰 Прибыль: %.2f\n", total)
-	} else {
-		fmt.Printf("🔻 Убыток: %.2f\n", total)
+	status := `"Бабки" не проблема💰`
+	if total < 0 {
+		status = "Дружок, уже должок🔻"
+	} else if total == 0 {
+		status = `Денюжки "тютю🕳️"`
 	}
-	return 0, nil
+
+	return &BalanceResponse{
+		Total:  total,
+		Status: status,
+	}, nil
 }
