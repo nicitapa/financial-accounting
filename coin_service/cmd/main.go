@@ -1,31 +1,44 @@
 package main
 
 import (
-	"coin_service/config"
-	"coin_service/internal"
-	"coin_service/repository"
-	"coin_service/service"
-	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
+	"coin_service/internal/bootstrap"
+	"coin_service/internal/config"
+	"context"
+	"github.com/joho/godotenv"
+	"github.com/sethvargo/go-envconfig"
 	"log"
+	"os"
+	"os/signal"
 )
 
 func main() {
-	cfg := config.Load()
+	// 1. Загружаем .env в окружение
+	if err := godotenv.Load(); err != nil {
+		log.Println("⚠️  .env file not found, using system environment")
+	}
 
-	db, err := sqlx.Open("postgres", cfg.Postgres.ConnectionURL())
+	var cfg config.Config
+
+	// 2. Читаем переменные окружения
+	err := envconfig.ProcessWith(context.TODO(), &envconfig.Config{
+		Target:   &cfg,
+		Lookuper: envconfig.OsLookuper(),
+	})
 	if err != nil {
-		log.Fatal("DB connection error:", err)
+		panic(err)
 	}
-	defer db.Close()
 
-	repo := repository.NewTransactionRepository(db)
-	svc := service.NewTransactionService(repo)
+	// 3. Остальной код без изменений
+	quitSignal := make(chan os.Signal, 1)
+	signal.Notify(quitSignal, os.Interrupt)
 
-	r := gin.Default()
-	ctrl := internal.NewController(r, svc)
+	app := bootstrap.New(cfg)
 
-	if err := ctrl.RunServer(":" + cfg.HTTPPort); err != nil {
-		log.Fatal("Server error:", err)
-	}
+	ctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		<-quitSignal
+		cancel()
+	}()
+
+	app.Run(ctx)
 }
