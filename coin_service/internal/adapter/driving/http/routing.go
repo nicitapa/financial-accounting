@@ -8,7 +8,7 @@ import (
 func (s *Server) endpoints() {
 	s.router.GET("/ping", s.Ping)
 
-	txG := s.router.Group("/tx")
+	txG := s.router.Group("/tx", s.checkUserAuthentication)
 	txG.POST("/create", s.CreateTransaction)
 	txG.GET("/get-all", s.GetAllTransactions)
 	txG.GET("/get", s.GetTransactionByID)
