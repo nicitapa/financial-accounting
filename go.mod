@@ -1,5 +1,5 @@
 module github.com/nicitapa/financial-accounting
 
-go 1.22.2
+go 1.24
 
-require github.com/go-chi/chi/v5 v5.2.3
+toolchain go1.24.9
