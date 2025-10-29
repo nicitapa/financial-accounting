@@ -5,11 +5,18 @@ import (
 	"time"
 )
 
-const ServiceLabel = "coin_service"
+const ServiceLabel = "auth_service"
 
 type Config struct {
-	HTTPPort string    `env:"HTTP_PORT" default:"7777"`
-	Postgres *Postgres `env:",prefix=POSTGRES_"`
+	HTTPPort   string     `env:"HTTP_PORT" default:"7777"`
+	Postgres   *Postgres  `env:",prefix=POSTGRES_"`
+	AuthParams AuthParams `env:",prefix=JWT_"`
+}
+
+type AuthParams struct {
+	AccessTokenTllMinutes int    `env:"ACCESS_TOKEN_TLL_MINUTES"`
+	RefreshTokenTllDays   int    `env:"REFRESH_TOKEN_TLL_DAYS"`
+	SECRET                string `env:"SECRET"`
 }
 
 type Postgres struct {

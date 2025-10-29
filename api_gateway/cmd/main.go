@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/nicitapa/financial-accounting/api_gateway/internal/config"
-	"github.com/nicitapa/financial-accounting/api_gateway/internal/router"
+	"api_gateway/internal/config"
+	"api_gateway/internal/router"
 	"log"
 	"net/http"
 )

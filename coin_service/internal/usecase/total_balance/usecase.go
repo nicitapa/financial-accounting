@@ -34,7 +34,6 @@ func (u *UseCase) GetTotalBalance(ctx context.Context) (*BalanceResponse, error)
 			Message: err.Error(),
 		}, err
 	}
-
 	status := `"Бабки" не проблема💰`
 	if total < 0 {
 		status = "Дружок, уже должок🔻"
