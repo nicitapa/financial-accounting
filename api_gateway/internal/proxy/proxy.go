@@ -60,7 +60,7 @@ func New(target *url.URL) http.Handler {
 		}
 	}
 
-	// Акуратная обработка ошибок апстрима
+	// Аккуратная обработка ошибок апстрима
 	rp.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
 		http.Error(w, "upstream error: "+err.Error(), http.StatusBadGateway)
 	}

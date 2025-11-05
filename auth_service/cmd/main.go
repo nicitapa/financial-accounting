@@ -1,13 +1,15 @@
 package main
 
 import (
-	"coin_service/internal/bootstrap"
-	"coin_service/internal/config"
 	"context"
-	"github.com/joho/godotenv"
-	"github.com/sethvargo/go-envconfig"
 	"os"
 	"os/signal"
+
+	"github.com/prankevich/Auth_service/internal/bootstrap"
+	"github.com/prankevich/Auth_service/internal/config"
+
+	"github.com/joho/godotenv"
+	"github.com/sethvargo/go-envconfig"
 )
 
 func main() {
